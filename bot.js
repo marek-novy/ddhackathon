@@ -134,9 +134,9 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
        console.log("____________VERBOSE_________________");
        console.log("WATSON: ",message.watsonData);
        console.log("____________OBJECT__________________");
-       console.log(util.inspect(message.watsonData, {showHidden: false, depth: null}));
+       console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
        console.log("____________REPLY_END___________________");
-      bot.reply(message, message.watsonData.output.text.join("\n"));
+      //bot.reply(message, message.watsonData.output.text.join("\n"));
       bot.reply(message, message.watsonData.output.generic);
     }
   });
