@@ -70,7 +70,6 @@ controllerWeb.middleware.receive.use(watsonMiddleware.receive);
 // Open the web socket server
 controllerWeb.openSocketServer(controllerWeb.httpserver);
 
-
 //controllerWeb.changeEars(watsonMiddleware.hear);
 // Start the bot brain in motion!!
 controllerWeb.startTicking();
@@ -118,40 +117,37 @@ controllerWeb.hears(['branch'], ["message_received"], watsonMiddleware.hear , (b
 */
 
 controllerWeb.hears(["What is love?"], ["message_received"], (bot, message) => {
-  bot.reply(message,"Baby don't hurt me");
+  bot.reply(message, "Baby don't hurt me");
 });
 
 controllerWeb.hears(["don't hurt me"], ["message_received"], (bot, message) => {
-  bot.reply(message,"... no more");
+  bot.reply(message, "... no more");
 });
 
-const util = require('util');
+const util = require("util");
 controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   console.log(message);
   console.log(message.watsonData.intents);
   watsonMiddleware.interpret(bot, message, function() {
     if (message.watsonError) {
       bot.reply(message, "OOPS 500 - Watson server error. Not our fault :(");
-     }
-
-     else {
-       console.log("____________REPLY_START_________________");
-       console.log("INTENTS:",message.watsonData.intents);
-       console.log("TEXT: ", message.watsonData.output.text);
-       console.log("NODES VISITED: ", message.watsonData.output.nodes_visited);
-       console.log("SYSTEM: ", message.watsonData.context.system);
-       console.log("____________VERBOSE OUTPIT_________________");
-       console.log("WATSON: ",message.watsonData.output);
-       //console.log("____________OBJECT__________________");
-       //console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
-       console.log("____________REPLY_END___________________");
+    } else {
+      console.log("____________REPLY_START_________________");
+      console.log("INTENTS:", message.watsonData.intents);
+      console.log("TEXT: ", message.watsonData.output.text);
+      console.log("NODES VISITED: ", message.watsonData.output.nodes_visited);
+      console.log("SYSTEM: ", message.watsonData.context.system);
+      console.log("____________VERBOSE OUTPIT_________________");
+      console.log("WATSON: ", message.watsonData.output);
+      //console.log("____________OBJECT__________________");
+      //console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
+      console.log("____________REPLY_END___________________");
       //bot.reply(message, message.watsonData.output.text.join("\n"));
-      message.watsonData.output.context=message.watsonData.context;
+      message.watsonData.output.context = message.watsonData.context;
       bot.reply(message, message.watsonData.output);
     }
   });
 });
-
 
 controllerWeb.on("hello", (bot, message) => {
   bot.say({
@@ -168,7 +164,6 @@ controllerWeb.on("welcome_back", function(bot, message) {
     typingDelay: 2000
   });
 });
-
 
 function usage_tip() {
   console.log("~~~~~~~~~~");
