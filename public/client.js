@@ -231,7 +231,12 @@ var Botkit = {
       that.message_list.appendChild(that.next_line);
     }
     if (message.text) {
-      message.html = converter.makeHtml(message.text);
+      console.log("parse", message);
+      if (Array.isArray(message.text)) {
+        message.html = converter.makeHtml(message.text.join("\n"));
+      } else {
+        message.html = converter.makeHtml(message.text);
+      }
     }
 
     that.next_line.innerHTML = that.message_template({
@@ -390,11 +395,6 @@ var Botkit = {
     });
 
     that.on("message", function(message) {
-      console.log(message);
-      that.renderMessage(message);
-    });
-
-    that.on("message", function(message) {
       if (message.goto_link) {
         window.location = message.goto_link;
       }
@@ -402,45 +402,54 @@ var Botkit = {
 
     that.on("message", function(message) {
       that.clearReplies();
-      if (message.test){ // TODO dodelat upravit
-        var list = document.createElement("ul");
+      console.log("message");
+      message.generic.forEach(response => {
+        switch (response.response_type) {
+          case "text":
+            that.input.disabled = false;
+            console.log("text");
+            that.renderMessage(message);
 
-        var elements = [];
-        for (var r = 0; r < message.quick_replies.length; r++) {
-          (function(reply) {
-            var li = document.createElement("li");
-            var el = document.createElement("a");
-            el.innerHTML = reply.title;
-            el.href = "#";
+            break;
+          case "option":
+            var list = document.createElement("ul");
+            console.log("option");
+            var elements = [];
+            for (var r = 0; r < response.options.length; r++) {
+              (function(reply) {
+                var li = document.createElement("li");
+                var el = document.createElement("a");
+                el.innerHTML = reply.label;
+                el.href = "#";
 
-            el.onclick = function() {
-              that.quickReply(reply.payload);
-            };
+                el.onclick = function() {
+                  that.quickReply(reply.value.input.text);
+                };
 
-            li.appendChild(el);
-            list.appendChild(li);
-            elements.push(li);
-          })(message.quick_replies[r]);
+                li.appendChild(el);
+                list.appendChild(li);
+                elements.push(li);
+              })(response.options[r]);
+            }
+
+            that.replies.appendChild(list);
+
+            // uncomment this code if you want your quick replies to scroll horizontally instead of stacking
+            // var width = 0;
+            // // resize this element so it will scroll horizontally
+            // for (var e = 0; e < elements.length; e++) {
+            //     width = width + elements[e].offsetWidth + 18;
+            // }
+            // list.style.width = width + 'px';
+
+            if (message.disable_input) {
+              that.input.disabled = true;
+            } else {
+              that.input.disabled = false;
+            }
+            break;
         }
-
-        that.replies.appendChild(list);
-
-        // uncomment this code if you want your quick replies to scroll horizontally instead of stacking
-        // var width = 0;
-        // // resize this element so it will scroll horizontally
-        // for (var e = 0; e < elements.length; e++) {
-        //     width = width + elements[e].offsetWidth + 18;
-        // }
-        // list.style.width = width + 'px';
-
-        if (message.disable_input) {
-          that.input.disabled = true;
-        } else {
-          that.input.disabled = false;
-        }
-      } else {
-        that.input.disabled = false;
-      }
+      });
     });
 
     that.on("history_loaded", function(history) {
