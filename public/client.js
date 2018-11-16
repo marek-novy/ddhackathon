@@ -224,6 +224,9 @@ var Botkit = {
       console.log("CONNECTED TO SOCKET");
       that.reconnect_count = 0;
       that.trigger("connected", event);
+     
+      console.log("send hello");
+      that.send('Hello!',null);
       that.deliverMessage({
         type: connectEvent,
         user: that.guid,
@@ -408,6 +411,7 @@ var Botkit = {
       that.sendEvent({
         name: "connected"
       });
+     
     });
 
     that.on("disconnected", function() {
