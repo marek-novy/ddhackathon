@@ -59,8 +59,8 @@ module.exports = function(controllerWeb, controllerSpark) {
       //cookie: {secure: true} // For development only
     })
   );
-  webserver.use(passport.initialize());
-  webserver.use(passport.session());
+  // webserver.use(passport.initialize());
+  // webserver.use(passport.session());
 
   // Developer Debug
 

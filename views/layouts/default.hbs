@@ -1,15 +1,81 @@
-<!DOCTYPE html>
 <html>
-{{> head}}
+    <head>
+        <title>Botkit Anywhere</title>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
+        <script src="https://cdn.rawgit.com/showdownjs/showdown/1.7.4/dist/showdown.min.js"></script>
+        <link rel="stylesheet" href="css/styles.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-<body>
-    <div class='bg'>
-        {{>header}}
-        <div class="wrapper">
-            {{{body}}}
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    </head>
+    <body style="background-image:url('img/bg.jpg');background-repeat: no-repeat; background-size: cover;">
+    <div class="container" style="height:100vh;">
+        <div class="row" style="height:10vh;">
+            <div class="col" style="height:10vh;">
+                <span>Marcela Bot</span>
+            </div>
+            <div class="col" style="height:10vh;">
+                <img src="/img/logo.png" style="height:10vh;"> 
+            </div>
         </div>
-        {{> footer}}
+        <div class="row" style="height:90vh;">
+                <div id="message_window" style="background-color:rgba(250,250,250,0.6);">
+                        <div class="disconnected">
+                            Disconnected... reconnecting!
+                        </div>
+                        <div class="offline">
+                            Offline! Reload to reconnect.
+                        </div>
+                        <section>
+                            <div id="message_list">
+                                <div id="message_template">
+                                    <div class="message {{message.type}}">
+                                        {{#if message.isTyping}}
+                                          <div class="typing-indicator">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                          </div>
+                                        {{/if}}
+                                        {{{message.html}}}
+            
+                                        {{#if message.open_link}}
+                                          <a href="{{{message.open_link}}}" target="_blank" class="button_message">{{#if message.link_title}}{{message.link_title}}{{else}}{{message.open_link}}{{/if}}</a>
+                                        {{/if}}
+                                    </div>
+                                    {{#message.files}}
+                                      <div class="file_attachment">
+                                      {{#if image}}
+                                        <img src="{{{url}}}" alt="{{{url}}}" />
+                                      {{else}}
+                                        <a href="{{{url}}}" title="{{{url}}}">{{{url}}}</a>
+                                      {{/if}}
+                                      </div>
+                                    {{/message.files}}
+                                </div>
+                            </div>
+                        </section>
+                        <div id="message_replies">
+                        </div>
+                        <footer>
+                            <form onsubmit="Botkit.send(Botkit.input.value, event)">
+                                <input type="text" autocomplete="off" id="messenger_input" placeholder="Type here..." />
+                                <button type="submit">Send</button>
+                            </form>
+                        </footer>
+                    </div>
+        </div>
     </div>
-</body>
-
+    <script src="client.js"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    </body>
 </html>

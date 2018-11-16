@@ -107,7 +107,7 @@ var Botkit = {
       console.log("send object");
       var message = {
         type: "outgoing",
-        text: text.labelF
+        text: text.label
       };
 
       this.clearReplies();
