@@ -13,6 +13,7 @@ var Botkit = {
     use_sockets: true
   },
   reconnect_count: 0,
+  snow: false,
   guid: null,
   current_user: null,
   on: function(event, handler) {
@@ -59,6 +60,32 @@ var Botkit = {
     if (!text) {
       return;
     }
+    if (that.snow) {
+      console.log(text);
+      var desc = text;
+      var message = {
+        type: "outgoing",
+        text: "Opening new incident in service now for you."
+      };
+      that.trigger("message", message);
+
+      that.trigger("typing");
+
+      setTimeout(function() {
+        var message = {
+          type: "outgoing",
+          text: "Opening snow",
+          goto_link:
+            "https://dimensiondataservices.service-now.com/nav_to.do?uri=incident.do?sys_id=-1%26sysparm_query=short_description=asd^priority=3"
+        };
+        that.trigger("message", message);
+      }, 2000);
+
+      that.snow = false;
+
+      return;
+    }
+
     if (typeof text === "string") {
       console.log("send string");
       var message = {
@@ -421,9 +448,6 @@ var Botkit = {
     that.on("message", function(message) {
       that.clearReplies();
       console.log(message);
-// check snow
-
-
 
       if (message.generic) {
         message.generic.forEach(response => {
@@ -475,6 +499,13 @@ var Botkit = {
         });
       } else if (message.text) {
         that.renderMessage(message);
+      }
+      // check snow
+      if (message.context) {
+        if (message.context.description) {
+          console.log("snow workflow");
+          that.snow = true;
+        }
       }
     });
 
