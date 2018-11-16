@@ -85,7 +85,7 @@ require("fs")
 console.log(
   "I AM ONLINE! COME TALK TO ME: http://localhost:" + (process.env.PORT || 3000)
 );
-
+/*
 controllerWeb.hears(['branch'], ["message_received"], watsonMiddleware.hear , (bot, message) => {
   watsonMiddleware.interpret(bot, message, function() {
     if (message.watsonError) {
@@ -115,22 +115,34 @@ controllerWeb.hears(['branch'], ["message_received"], watsonMiddleware.hear , (b
     }
   });
 });
-
+*/
+const util = require('util');
 controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   console.log(message);
   console.log(message.watsonData.intents);
   watsonMiddleware.interpret(bot, message, function() {
     if (message.watsonError) {
-      bot.reply(message, "Oh no. 500");
+      bot.reply(message, "OOPS 500 - Watson server error. Not our fault :(");
      }
 
      else {
+       console.log("____________REPLY_START_________________");
        console.log("INTENTS:",message.watsonData.intents);
+       console.log("TEXT: ", message.watsonData.output.text);
+       console.log("NODES VISITED: ", message.watsonData.output.nodes_visited);
+       console.log("SYSTEM: ", message.watsonData.context.system);
+       console.log("____________VERBOSE_________________");
+       console.log("WATSON: ",message.watsonData);
+       console.log("____________OBJECT__________________");
+       console.log(util.inspect(message.watsonData, {showHidden: false, depth: null}));
+       console.log("____________REPLY_END___________________");
       bot.reply(message, message.watsonData.output.text.join("\n"));
+      bot.reply(message, message.watsonData.output.generic);
     }
   });
 });
 
+/*
 controllerWeb.on("hello", (bot, message) => {
   bot.say({
     text: "Hello world, message from bot js.",
@@ -146,6 +158,7 @@ controllerWeb.on("welcome_back", function(bot, message) {
     typingDelay: 2000
   });
 });
+*/
 
 function usage_tip() {
   console.log("~~~~~~~~~~");
