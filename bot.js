@@ -146,6 +146,7 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
        //console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
        console.log("____________REPLY_END___________________");
       //bot.reply(message, message.watsonData.output.text.join("\n"));
+      message.watsonData.output.context=message.watsonData.context;
       bot.reply(message, message.watsonData.output);
     }
   });
