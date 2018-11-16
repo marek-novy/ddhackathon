@@ -390,6 +390,7 @@ var Botkit = {
     });
 
     that.on("message", function(message) {
+      console.log(message);
       that.renderMessage(message);
     });
 
@@ -401,7 +402,7 @@ var Botkit = {
 
     that.on("message", function(message) {
       that.clearReplies();
-      if (message.quick_replies) {
+      if (message.test){ // TODO dodelat upravit
         var list = document.createElement("ul");
 
         var elements = [];
