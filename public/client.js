@@ -59,21 +59,38 @@ var Botkit = {
     if (!text) {
       return;
     }
-    var message = {
-      type: "outgoing",
-      text: text
-    };
+    if (typeof text === "string") {
+      var message = {
+        type: "outgoing",
+        text: text
+      };
 
-    this.clearReplies();
-    that.renderMessage(message);
+      this.clearReplies();
+      that.renderMessage(message);
 
-    that.deliverMessage({
-      type: "message",
-      text: text,
-      user: this.guid,
-      channel: this.options.use_sockets ? "socket" : "webhook"
-    });
+      that.deliverMessage({
+        type: "message",
+        text: text,
+        user: this.guid,
+        channel: this.options.use_sockets ? "socket" : "webhook"
+      });
+    }
+    else{
+      var message = {
+        type: "outgoing",
+        text: text.value.input.text
+      };
 
+      this.clearReplies();
+      that.renderMessage(message);
+
+      that.deliverMessage({
+        type: "message",
+        text: text.value.input.text,
+        user: this.guid,
+        channel: this.options.use_sockets ? "socket" : "webhook"
+      });
+    }
     this.input.value = "";
 
     this.trigger("sent", message);
@@ -238,7 +255,9 @@ var Botkit = {
         message.html = converter.makeHtml(message.text);
       }
     }
-
+    if(typeof message === "string")
+    message.html = converter.makeHtml(message)
+  
     that.next_line.innerHTML = that.message_template({
       message: message
     });
@@ -402,7 +421,11 @@ var Botkit = {
 
     that.on("message", function(message) {
       that.clearReplies();
-      console.log("message");
+      if(typeof message === "string"){
+        that.renderMessage(message);
+      return;
+      }
+
       message.generic.forEach(response => {
         switch (response.response_type) {
           case "text":
@@ -423,7 +446,7 @@ var Botkit = {
                 el.href = "#";
 
                 el.onclick = function() {
-                  that.quickReply(reply.value.input.text);
+                  that.quickReply(reply);
                 };
 
                 li.appendChild(el);
