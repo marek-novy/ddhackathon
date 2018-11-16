@@ -14,10 +14,10 @@ webserver.get('/embed', function(req,res) {
 // This creates the /embed route, where an easy-to-copy embed code is available
 webserver.get('/', function(req,res) {
 
-    res.render('index', {
-      layout: 'layouts/default',
-      base_url: req.hostname
-    });
+
+    res.status(301).redirect("/chat.html");
+
+
 
 });
 
