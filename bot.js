@@ -116,6 +116,15 @@ controllerWeb.hears(['branch'], ["message_received"], watsonMiddleware.hear , (b
   });
 });
 */
+
+controllerWeb.hears(["What is love?"], ["message_received"], (bot, message) => {
+  bot.reply(message,"Baby don't hurt me");
+});
+
+controllerWeb.hears(["don't hurt me"], ["message_received"], (bot, message) => {
+  bot.reply(message,"... no more");
+});
+
 const util = require('util');
 controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   console.log(message);
@@ -142,7 +151,7 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   });
 });
 
-/*
+
 controllerWeb.on("hello", (bot, message) => {
   bot.say({
     text: "Hello world, message from bot js.",
@@ -158,7 +167,7 @@ controllerWeb.on("welcome_back", function(bot, message) {
     typingDelay: 2000
   });
 });
-*/
+
 
 function usage_tip() {
   console.log("~~~~~~~~~~");
