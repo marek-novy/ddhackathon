@@ -42,29 +42,13 @@ if (process.env.MONGO_URI) {
 // Create the Botkit controller, which controls all instances of the bot.
 var controllerWeb = Botkit.socketbot(bot_options);
 
-/*var controllerCiscoSpark = Botkit.sparkbot({
-  // debug: true,
-  // limit_to_domain: ['mycompany.com'],
-  // limit_to_org: 'my_cisco_org_id',
-  public_address: process.env.public_address,
-  ciscospark_access_token: process.env.access_token,
-  secret: process.env.secret, // this is an RECOMMENDED but optional setting that enables validation of incoming webhooks
-  webhook_name: "DD omnichannel botikit app",
-  replyWithTyping: true,
-  type: "cisco"
-});*/
-
 // Set up an Express-powered webserver to expose oauth and webhook endpoints
 var webserver = require(__dirname + "/components/express_webserver.js")(
-  controllerWeb//,
-  //controllerCiscoSpark
+  controllerWeb
 );
 
 // Load in a plugin that defines the bot's identity
 require(__dirname + "/components/plugin_identity.js")(controllerWeb);
-
-// Tell Cisco Spark to start sending events to this application
-//require(__dirname + "/components/subscribe_events.js")(controllerCiscoSpark);
 
 // Watson middleware
 var watsonMiddleware = require("botkit-middleware-watson")({
@@ -77,10 +61,7 @@ var watsonMiddleware = require("botkit-middleware-watson")({
 });
 
 // Define controllers to use watson middleWare
-//controllerCiscoSpark.middleware.receive.use(watsonMiddleware.receive);
 controllerWeb.middleware.receive.use(watsonMiddleware.receive);
-
-// controllerCiscoSpark.changeEars(watsonMiddleware.hear);
 
 // enable advanced botkit studio metrics
 // and capture the metrics API to use with the identity plugin!
@@ -93,7 +74,6 @@ controllerWeb.openSocketServer(controllerWeb.httpserver);
 //controllerWeb.changeEars(watsonMiddleware.hear);
 // Start the bot brain in motion!!
 controllerWeb.startTicking();
-//controllerCiscoSpark.startTicking();
 
 var normalizedPath = require("path").join(__dirname, "skills");
 require("fs")
@@ -102,16 +82,10 @@ require("fs")
     require("./skills/" + file)(controllerWeb);
   });
 
-/*require("fs")
-  .readdirSync(normalizedPath)
-  .forEach(function(file) {
-    require("./skills/" + file)(controllerCiscoSpark);
-  });*/
-
 console.log(
   "I AM ONLINE! COME TALK TO ME: http://localhost:" + (process.env.PORT || 3000)
 );
-/*
+
 controllerWeb.hears(['branch'], ["message_received"], watsonMiddleware.hear , (bot, message) => {
   watsonMiddleware.interpret(bot, message, function() {
     if (message.watsonError) {
@@ -157,20 +131,6 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   });
 });
 
-controllerCiscoSpark.hears(
-  [".*"],
-  ["direct_message", "direct_mention", "mention"],
-  (bot, message) => {
-    watsonMiddleware.interpret(bot, message, function() {
-      if (message.watsonError) {
-        bot.reply(message, "Oh no. 500");
-      } else {
-        bot.reply(message, message.watsonData.output.text.join("\n"));
-      }
-    });
-  }
-);
-*/
 controllerWeb.on("hello", (bot, message) => {
   bot.say({
     text: "Hello world, message from bot js.",
