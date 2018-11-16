@@ -149,6 +149,7 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
   });
 });
 
+/*()
 controllerWeb.on("hello", (bot, message) => {
   bot.say({
     text: "Hello world, message from bot js.",
@@ -163,7 +164,7 @@ controllerWeb.on("welcome_back", function(bot, message) {
     type: "message",
     typingDelay: 2000
   });
-});
+});*/
 
 function usage_tip() {
   console.log("~~~~~~~~~~");
