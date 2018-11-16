@@ -126,8 +126,8 @@ controllerWeb.hears(["don't hurt me"], ["message_received"], (bot, message) => {
 
 const util = require("util");
 controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
-  console.log(message);
-  console.log(message.watsonData.intents);
+  //console.log(message);
+  //console.log(message.watsonData.intents);
   watsonMiddleware.interpret(bot, message, function() {
     if (message.watsonError) {
       bot.reply(message, "OOPS 500 - Watson server error. Not our fault :(");

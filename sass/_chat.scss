@@ -1,9 +1,9 @@
 $action_color: orange;
 $background: #FFFFFF;
 $bot_message_background: #F0F0F0;
-$bot_message_text: #333;
-$human_message_background: $botkit_purple;
-$human_message_text: white;
+$bot_message_text: #455565;
+$human_message_background: #455565;
+$human_message_text: #F0F0F0;
 
 #message_window {
     background: $background;
@@ -105,14 +105,14 @@ $human_message_text: white;
   }
 
   .message {
-      font-size: 14px;
-      padding: 0.5rem;
-      background: $bot_message_background;
-      color: $bot_message_text;
-      border-radius: 5px;
-      width: auto;
-      display: inline-block;
-      max-width: 75%;
+    width: auto !important;
+    padding: 4px 10px 7px !important;
+    border-radius: 10px 10px 10px 0;
+    background: #ffffff;
+    font-size: 30px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    word-wrap: break-word;
+    display: inline-block;
 
   }
 
@@ -156,10 +156,15 @@ $human_message_text: white;
   }
 
   .message.outgoing {
-      float: right;
-
-      background: $human_message_background;
-      color: $human_message_text;
+    float: right;
+    width: auto !important;
+    background: #dcf8c6;
+    border-radius: 10px 10px 0 10px;
+    padding: 4px 10px 7px !important;
+    font-size: 30px;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    display: inline-block;
+    word-wrap: break-word;
 
   }
 
@@ -187,7 +192,7 @@ $human_message_text: white;
          color: $botkit_purple;
          border-radius: 16px;
          padding: 0.25rem 1rem;
-         font-size: 14px;
+         font-size: 30px;
          cursor: pointer;
 
          &:hover {
