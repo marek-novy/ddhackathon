@@ -173,7 +173,7 @@ module.exports = function(controllerWeb, controllerSpark) {
   controllerWeb.webserver = webserver;
   controllerWeb.httpserver = server;
 
-  controllerSpark.webserver = webserver;
+  //controllerSpark.webserver = webserver;
 
   return webserver;
 };
