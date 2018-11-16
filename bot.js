@@ -131,13 +131,13 @@ controllerWeb.hears([".*"], ["message_received"], (bot, message) => {
        console.log("TEXT: ", message.watsonData.output.text);
        console.log("NODES VISITED: ", message.watsonData.output.nodes_visited);
        console.log("SYSTEM: ", message.watsonData.context.system);
-       console.log("____________VERBOSE_________________");
-       console.log("WATSON: ",message.watsonData);
-       console.log("____________OBJECT__________________");
-       console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
+       console.log("____________VERBOSE OUTPIT_________________");
+       console.log("WATSON: ",message.watsonData.output);
+       //console.log("____________OBJECT__________________");
+       //console.log(util.inspect(message.watsonData.output.generic, {showHidden: false, depth: null}));
        console.log("____________REPLY_END___________________");
       //bot.reply(message, message.watsonData.output.text.join("\n"));
-      bot.reply(message, message.watsonData.output.generic);
+      bot.reply(message, message.watsonData.output);
     }
   });
 });
