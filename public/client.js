@@ -60,8 +60,8 @@ var Botkit = {
     if (!text) {
       return;
     }
-    if (that.snow ) {
-      console.log("snow",text);
+    if (that.snow) {
+      console.log("snow", text);
       var desc = text;
       var message = {
         type: "outgoing",
@@ -76,10 +76,11 @@ var Botkit = {
           type: "outgoing",
           text: "Opening snow",
           goto_link:
-            "https://dimensiondataservices.service-now.com/nav_to.do?uri=incident.do?sys_id=-1%26sysparm_query=short_description="+desc+"^priority=3"
+            "https://dimensiondataservices.service-now.com/nav_to.do?uri=incident.do?sys_id=-1%26sysparm_query=short_description=" +
+            desc +
+            "^priority=3"
         };
         that.trigger("message", message);
-        
       }, 2000);
 
       that.snow = false;
@@ -224,15 +225,26 @@ var Botkit = {
       console.log("CONNECTED TO SOCKET");
       that.reconnect_count = 0;
       that.trigger("connected", event);
-     
-      console.log("send hello");
-      that.send('Hello!',null);
+
+  
+
       that.deliverMessage({
         type: connectEvent,
         user: that.guid,
         channel: "socket",
         user_profile: that.current_user ? that.current_user : null
       });
+      console.log("send hello");
+
+
+      that.deliverMessage({
+        type: "message",
+        text: "Hello",
+        user: this.guid,
+        channel: "socket"
+      });
+
+
     });
 
     that.socket.addEventListener("error", function(event) {
@@ -411,7 +423,6 @@ var Botkit = {
       that.sendEvent({
         name: "connected"
       });
-     
     });
 
     that.on("disconnected", function() {
@@ -507,7 +518,11 @@ var Botkit = {
         that.renderMessage(message);
       }
       // check snow
-      if (Array.isArray(message.text) && message.text[0] === "Could you please shortly describe an incident? We will create ticket in SNOW.") {
+      if (
+        Array.isArray(message.text) &&
+        message.text[0] ===
+          "Could you please shortly describe an incident? We will create ticket in SNOW."
+      ) {
         if (message.context.description) {
           console.log("snow workflow");
           that.snow = true;
