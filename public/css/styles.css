@@ -298,6 +298,18 @@ a.button {
 body {
   font-family: 'Raleway', sans-serif; }
 
+@media (max-width: 960px) {
+  a, p {
+    font-size: 14px !important; }
+  span {
+    font-size: 24px !important; }
+  img {
+    height: 46px !important; }
+  .chatwindow {
+    padding: 86px 10x 10px 10px !important; }
+  .header {
+    height: 70px; } }
+
 #home {
   position: relative;
   max-width: 650px;
