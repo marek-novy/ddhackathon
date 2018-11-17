@@ -72,6 +72,7 @@ var Botkit = {
       that.trigger("typing");
 
       setTimeout(function() {
+        document.getElementById('messenger_input').value = "";
         var message = {
           type: "outgoing",
           text: "Opening snow",
@@ -447,7 +448,7 @@ var Botkit = {
 
     that.on("message", function(message) {
       if (message.goto_link) {
-        window.location = message.goto_link;
+        window.open(message.goto_link, '_blank');
       }
     });
 
